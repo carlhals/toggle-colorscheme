@@ -23,7 +23,7 @@ my %solarized_colors = (
   "green"  =>"#859900"
 );
 
-my %themes = (
+my %schemes = (
   "solarized_dark" => {
     "background"       => $solarized_colors{"base03"},
     "foreground"       => $solarized_colors{"base0"},
@@ -76,26 +76,28 @@ my %themes = (
 
 sub on_start {
   my ($self) = @_;
-  my $startup_theme = "solarized_dark";
-  $self->{current_theme} = $startup_theme;
-  load_theme($self,\%{$themes{$startup_theme}});
+  my $startup_scheme = "solarized_dark";
+  $self->{current_scheme} = $startup_scheme;
+  load_scheme($self,\%{$schemes{$startup_scheme}});
 }
 
 sub on_user_command {
   my ($self, $cmd) = @_;
-  my $current_theme = $self->{current_theme};
-  if ($current_theme eq "solarized_dark") {
-    load_theme($self,\%{$themes{"solarized_light"}});
-    $self->{current_theme} = "solarized_light";
-  } elsif ($current_theme eq "solarized_light") {
-    load_theme($self,\%{$themes{"solarized_dark"}});
-    $self->{current_theme} = "solarized_dark";
+  if ($cmd eq 'colorscheme:toggle') {
+    my $current_scheme = $self->{current_scheme};
+    if ($current_scheme eq "solarized_dark") {
+      load_scheme($self,\%{$schemes{"solarized_light"}});
+      $self->{current_scheme} = "solarized_light";
+    } elsif ($current_scheme eq "solarized_light") {
+      load_scheme($self,\%{$schemes{"solarized_dark"}});
+      $self->{current_scheme} = "solarized_dark";
+    } else {
+    } 
   } else {
-    printf "No current scheme for some reason.. maybe connected to wrong terminal?\n";
   }
 }
 
-sub load_theme {
+sub load_scheme {
   my ($self,$colorscheme) = @_;
   my $command="";
   for my $setting (keys %{$colorscheme}) {
