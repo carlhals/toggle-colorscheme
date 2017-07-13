@@ -1,10 +1,10 @@
 # toggle_colorscheme
 
-This extension implements a toggle between solarized dark and solarized light for URxvt
+This extension implements a toggle between Solarized Dark and Solarized Light color schemes for URxvt
 
 ## Setup
 
-1. Clone the repository and copy the **colorscheme** script to wherever your URxvt extensions live (Sometimes __~/.urxvt/ext__
+1. Clone the repository and copy the **colorscheme** script to wherever your URxvt extensions live (Sometimes __~/.urxvt/ext__)
 
 2. Make sure the following exists somewhere in your .Xresources or .Xdefaults::
 ```
