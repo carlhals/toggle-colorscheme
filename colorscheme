@@ -4,7 +4,6 @@
 use strict;
 use warnings;
 
-my $transparency = "85";
 
 my %solarized_colors = (
   "base03" =>"#002b36",
