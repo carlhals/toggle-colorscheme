@@ -1,12 +1,17 @@
-# toggle_colorscheme
+# colorscheme
 
-This extension implements a toggle between Solarized Dark and Solarized Light color schemes for URxvt
+This extension implements a toggle between a few selected color schemes color schemes for URxvt:
+* Solarized Dark
+* Solarized Light
+* Gruvbox
+* Papercolor
+* Nord
 
 ## Setup
 
 1. Clone the repository and copy the **colorscheme** script to wherever your URxvt extensions live (Sometimes __~/.urxvt/ext__)
 
-2. Make sure the following exists somewhere in your .Xresources or .Xdefaults::
+2. Make sure the following exists somewhere in your .Xresources or .Xdefaults:
 ```
     URxvt.perl-ext-common:      colorscheme
     URxvt.keysym.Mod4-c:        perl:colorscheme:toggle
