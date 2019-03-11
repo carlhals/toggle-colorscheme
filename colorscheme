@@ -198,6 +198,13 @@ sub load_scheme {
       $command .= get_command($setting,$scheme{$setting});
   }
   $self->cmd_parse($command);
+  my $msg = "Set ".$scheme{"name"};
+  $self->{overlay} = $self->overlay( 0, -1, $self->strwidth($msg) + 1,
+       1, urxvt::OVERLAY_RSTYLE, 0 );
+  $self->{overlay}->set( 0, 0, $msg );
+  $self->{timer} = urxvt::timer->new->after (1)->cb (sub {
+      delete $self->{overlay};
+    });
 }
 
 sub get_command {
