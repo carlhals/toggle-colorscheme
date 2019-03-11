@@ -1,5 +1,5 @@
 #! /usr/bin/env perl
-# this extension implements a toggle between solarized dark and solarized light for URxvt
+# this extension implements a toggle between color schemes for URxvt
 
 use strict;
 use warnings;
@@ -25,32 +25,53 @@ my %solarized_colors = (
   "green"  =>"#859900"
 );
 
-my %schemes = (
-  "solarized_dark" => {
-    "background"       => "[".$transparency."]".$solarized_colors{"base03"},
+my %nord_colors = (
+  "nord0"  => "#2E3440",
+  "nord1"  => "#3B4252",
+  "nord2"  => "#434C5E",
+  "nord3"  => "#4C566A",
+  "nord4"  => "#D8DEE9",
+  "nord5"  => "#E5E9F0",
+  "nord6"  => "#ECEFF4",
+  "nord7"  => "#8FBCBB",
+  "nord8"  => "#88C0D0",
+  "nord9"  => "#81A1C1",
+  "nord10" => "#5E81AC",
+  "nord11" => "#BF616A",
+  "nord12" => "#D08770",
+  "nord13" => "#EBCB8B",
+  "nord14" => "#A3BE8C",
+  "nord15" => "#B48EAD"
+);
+
+my @schemes = (
+  {
+    "name"             => "solarized_dark",
+    "background"       => $solarized_colors{"base03"},
     "foreground"       => $solarized_colors{"base0"},
-    "cursor"           => $solarized_colors{"base2"},
-    "mouse_background" => $solarized_colors{"base02"},
+    "cursor"           => $solarized_colors{"base1"},
+    "mouse_background" => $solarized_colors{"base01"},
     "mouse_foreground" => $solarized_colors{"base1"},
-    "border"           => "[".$transparency."]".$solarized_colors{"base03"},
+    "border"           => $solarized_colors{"base03"},
     "0"                => $solarized_colors{"base02"},
-    "8"                => $solarized_colors{"base03"},
     "1"                => $solarized_colors{"red"},
-    "9"                => $solarized_colors{"orange"},
     "2"                => $solarized_colors{"green"},
-    "10"               => $solarized_colors{"base01"},
     "3"                => $solarized_colors{"yellow"},
-    "11"               => $solarized_colors{"base00"},
     "4"                => $solarized_colors{"blue"},
-    "12"               => $solarized_colors{"base0"},
     "5"                => $solarized_colors{"magenta"},
-    "13"               => $solarized_colors{"violet"},
     "6"                => $solarized_colors{"cyan"},
-    "14"               => $solarized_colors{"base1"},
     "7"                => $solarized_colors{"base2"},
+    "8"                => $solarized_colors{"base03"},
+    "9"                => $solarized_colors{"orange"},
+    "10"               => $solarized_colors{"base01"},
+    "11"               => $solarized_colors{"base00"},
+    "12"               => $solarized_colors{"base0"},
+    "13"               => $solarized_colors{"violet"},
+    "14"               => $solarized_colors{"base1"},
     "15"               => $solarized_colors{"base3"}
   },
-  "solarized_light" => {
+  {
+    "name"             => "solarized_light",
     "background"       => $solarized_colors{"base3"},
     "foreground"       => $solarized_colors{"base00"},
     "cursor"           => $solarized_colors{"base01"},
@@ -58,52 +79,124 @@ my %schemes = (
     "mouse_foreground" => $solarized_colors{"base01"},
     "border"           => $solarized_colors{"base03"},
     "0"                => $solarized_colors{"base2"},
-    "8"                => $solarized_colors{"base3"},
     "1"                => $solarized_colors{"red"},
-    "9"                => $solarized_colors{"orange"},
     "2"                => $solarized_colors{"green"},
-    "10"               => $solarized_colors{"base1"},
     "3"                => $solarized_colors{"yellow"},
-    "11"               => $solarized_colors{"base0"},
     "4"                => $solarized_colors{"blue"},
-    "12"               => $solarized_colors{"base00"},
     "5"                => $solarized_colors{"magenta"},
-    "13"               => $solarized_colors{"violet"},
     "6"                => $solarized_colors{"cyan"},
-    "14"               => $solarized_colors{"base01"},
     "7"                => $solarized_colors{"base02"},
+    "8"                => $solarized_colors{"base3"},
+    "9"                => $solarized_colors{"orange"},
+    "10"               => $solarized_colors{"base1"},
+    "11"               => $solarized_colors{"base0"},
+    "12"               => $solarized_colors{"base00"},
+    "13"               => $solarized_colors{"violet"},
+    "14"               => $solarized_colors{"base01"},
     "15"               => $solarized_colors{"base03"}
-  }
+  },
+  {
+    "name"             => "gruvbox",
+    "background"       => "#282828",
+    "foreground"       => "#ebdbb2",
+    "cursor"           => "#a89984",
+    "mouse_background" => "#282828",
+    "mouse_foreground" => "#8ec07c",
+    "border"           => "#282828",
+    "0"                => "#282828",
+    "1"                => "#cc241d",
+    "2"                => "#98971a",
+    "3"                => "#d79921",
+    "4"                => "#458588",
+    "5"                => "#b16286",
+    "6"                => "#689d6a",
+    "7"                => "#a89984",
+    "8"                => "#928374",
+    "9"                => "#fb4934",
+    "10"               => "#b8bb26",
+    "11"               => "#fabd2f",
+    "12"               => "#83a598",
+    "13"               => "#d3869b",
+    "14"               => "#8ec07c",
+    "15"               => "#ebdbb2"
+},
+{
+  "name"             => "papercolor",
+  "background"       => "#1c1c1c",
+  "foreground"       => "#f2f2f2",
+  "cursorColor"      => "#25c3dc",
+  "mouse_background" => "#1c1c1c",
+  "mouse_foreground" => "#25c3dc",
+  "border"           => "#1c1c1c",
+	"0"                => "#2c2c2c",
+	"1"                => "#c62828",
+	"2"                => "#558b2e",
+	"3"                => "#f9a825",
+	"4"                => "#1565c1",
+	"5"                => "#6a1e9a",
+	"6"                => "#00838f",
+	"7"                => "#ffffff",
+	"8"                => "#969694",
+	"9"                => "#f15250",
+	"10"               => "#86bd47",
+	"11"               => "#f8e63a",
+	"12"               => "#77b2f6",
+	"13"               => "#b963c8",
+	"14"               => "#25c3dc",
+	"15"               => "#ffffff"
+},
+{
+  "name"             => "nord",
+  "background"       => $nord_colors{"nord0"},
+  "foreground"       => $nord_colors{"nord4"},
+  "cursorColor"      => $nord_colors{"nord4"},
+  "mouse_background" => $nord_colors{"nord0"},
+  "mouse_foreground" => $nord_colors{"nord4"},
+  "border"           => $nord_colors{"nord0"},
+  "0"                => $nord_colors{"nord1"},
+  "1"                => $nord_colors{"nord11"},
+  "2"                => $nord_colors{"nord14"},
+  "3"                => $nord_colors{"nord13"},
+  "4"                => $nord_colors{"nord9"},
+  "5"                => $nord_colors{"nord15"},
+  "6"                => $nord_colors{"nord8"},
+  "7"                => $nord_colors{"nord5"},
+  "8"                => $nord_colors{"nord3"},
+  "9"                => $nord_colors{"nord11"},
+  "10"               => $nord_colors{"nord14"},
+  "11"               => $nord_colors{"nord13"},
+  "12"               => $nord_colors{"nord9"},
+  "13"               => $nord_colors{"nord15"},
+  "14"               => $nord_colors{"nord7"},
+  "15"               => $nord_colors{"nord6"},
+}
 );
 
 sub on_start {
   my ($self) = @_;
-  my $startup_scheme = "solarized_dark";
+  my $startup_scheme = 0; #solarized_dark
   $self->{current_scheme} = $startup_scheme;
-  load_scheme($self,\%{$schemes{$startup_scheme}});
+  $self->{schemes_count}  = scalar @schemes;
+  load_scheme($self,$startup_scheme);
 }
 
 sub on_user_command {
   my ($self, $cmd) = @_;
   if ($cmd eq 'colorscheme:toggle') {
-    my $current_scheme = $self->{current_scheme};
-    if ($current_scheme eq "solarized_dark") {
-      load_scheme($self,\%{$schemes{"solarized_light"}});
-      $self->{current_scheme} = "solarized_light";
-    } elsif ($current_scheme eq "solarized_light") {
-      load_scheme($self,\%{$schemes{"solarized_dark"}});
-      $self->{current_scheme} = "solarized_dark";
-    } else {
-    } 
+    my $next_theme = ($self->{current_scheme} + 1) % $self->{schemes_count};
+    load_scheme($self,$next_theme);
+    $self->{current_scheme} = $next_theme;
   } else {
   }
 }
 
 sub load_scheme {
-  my ($self,$colorscheme) = @_;
+  my ($self,$index) = @_;
+  my %scheme = %{$schemes[$index]};
   my $command="";
-  for my $setting (keys %{$colorscheme}) {
-      $command .= get_command($setting,$colorscheme->{$setting});
+  for my $setting (keys %scheme) {
+      next if $setting eq "name";
+      $command .= get_command($setting,$scheme{$setting});
   }
   $self->cmd_parse($command);
 }
@@ -131,11 +224,8 @@ sub get_command {
 
 sub gen_osc {
   my $ESC = "\033";
-  my $BEL = "\007";
-  my $DSC = $ESC."P";
   my $OSC = $ESC."]";
+  my $BEL = "\007";
   my ($code,$value) = @_;
   return sprintf $OSC.$code.";".$value.$BEL;
 }
-
-
